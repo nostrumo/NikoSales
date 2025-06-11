@@ -1,3 +1,4 @@
+/* Страница настроек магазина. */
 const { useState, useEffect } = React;
 
 const topics = [
@@ -84,7 +85,7 @@ export default function ShopSettingsPage() {
                 onChange={handleChange}
                 placeholder="Месторасположение"
             />
-            <div>
+            <div className="checkbox-group">
                 <p>На что отвечает ИИ агент:</p>
                 {topics.map(t => (
                     <label key={t.id}>
@@ -97,7 +98,7 @@ export default function ShopSettingsPage() {
                     </label>
                 ))}
             </div>
-            <div>
+            <div className="checkbox-group">
                 <p>На что отвечает менеджер:</p>
                 {topics.map(t => (
                     <label key={t.id}>

@@ -1,3 +1,4 @@
+/* Компонент страницы чата менеджера с пользователями. */
 const { useState, useEffect, useRef } = React;
 
 export default function ChatPage() {
@@ -6,6 +7,7 @@ export default function ChatPage() {
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState('');
     const wsRef = useRef(null);
+    const bottomRef = useRef(null);
 
     useEffect(() => {
         // Загрузка списка пользователей магазина (заглушка)
@@ -26,6 +28,10 @@ export default function ChatPage() {
         wsRef.current = ws;
         return () => ws.close();
     }, [currentUser]);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     const send = () => {
         if (wsRef.current && text.trim()) {
@@ -53,6 +59,7 @@ export default function ChatPage() {
                     {messages.map((m, i) => (
                         <div key={i} className={`message ${m.role}`}>{m.content}</div>
                     ))}
+                    <div ref={bottomRef}></div>
                 </div>
                 {currentUser && (
                     <div className="input-area">
