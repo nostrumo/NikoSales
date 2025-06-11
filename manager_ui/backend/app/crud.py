@@ -41,7 +41,11 @@ async def get_user_messages(db: AsyncSession, user_id: int) -> list[models.Messa
 async def create_business_account(
     db: AsyncSession, account_data: schemas.BusinessAccountCreate
 ) -> models.BusinessAccount:
-    """Создаёт новый магазин."""
+    """Создаёт новый магазин.
+
+    Параметры включают тип интеграции и, при необходимости, API‑ключ для
+    взаимодействия с внешним REST API магазина.
+    """
     account = models.BusinessAccount(**account_data.dict())
     db.add(account)
     await db.commit()

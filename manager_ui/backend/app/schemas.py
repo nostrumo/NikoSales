@@ -59,6 +59,7 @@ class IntegrationType(str, Enum):
     WILDBERRIES = "wildberries"
     YAMARKET = "yamarket"
     AVITO = "avito"
+    JIVO = "jivo"
     WEBSITE = "website"
 
 
@@ -71,10 +72,15 @@ class DataType(str, Enum):
 
 
 class BusinessAccountBase(BaseModel):
-    """Базовая схема магазина."""
+    """Базовая схема магазина.
+
+    Содержит общие поля для описания магазина, включая тип интеграции и
+    необязательный API-ключ для доступа к сторонним сервисам.
+    """
 
     name: str
     integration_type: IntegrationType
+    api_key: str | None = None
     data_type: DataType | None = None
     data_content: str | None = None
 
@@ -90,6 +96,7 @@ class BusinessAccountUpdate(BaseModel):
 
     name: str | None = None
     integration_type: IntegrationType | None = None
+    api_key: str | None = None
     data_type: DataType | None = None
     data_content: str | None = None
 

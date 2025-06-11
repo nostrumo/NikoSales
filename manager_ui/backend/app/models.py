@@ -59,6 +59,7 @@ class IntegrationType(str, Enum):
     WILDBERRIES = "wildberries"
     YAMARKET = "yamarket"
     AVITO = "avito"
+    JIVO = "jivo"
     WEBSITE = "website"
 
 
@@ -79,13 +80,18 @@ manager_shops = Table(
 
 
 class BusinessAccount(Base):
-    """Магазин, к которому привязан менеджер."""
+    """Магазин, к которому привязан менеджер.
+
+    Помимо общей информации, хранит тип интеграции и API-ключ, необходимый
+    для подключения к внешнему REST API магазина.
+    """
 
     __tablename__ = "business_accounts"
 
     id: int = Column(Integer, primary_key=True, index=True)
     name: str = Column(String, nullable=False)
     integration_type: IntegrationType = Column(SAEnum(IntegrationType), nullable=False)
+    api_key: str | None = Column(String, nullable=True)
     creator_id: int = Column(Integer, ForeignKey("users.id"), nullable=False)
     data_type: DataType = Column(SAEnum(DataType), nullable=True)
     data_content: str | None = Column(Text, nullable=True)
