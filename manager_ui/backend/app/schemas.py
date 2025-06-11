@@ -85,11 +85,34 @@ class BusinessAccountCreate(BusinessAccountBase):
     creator_id: int
 
 
+class BusinessAccountUpdate(BaseModel):
+    """Схема обновления магазина."""
+
+    name: str | None = None
+    integration_type: IntegrationType | None = None
+    data_type: DataType | None = None
+    data_content: str | None = None
+
+
 class BusinessAccountRead(BusinessAccountBase):
     """Схема чтения магазина."""
 
     id: int
     creator_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class ShopUser(BaseModel):
+    """Пользователь магазина с указанием его роли."""
+
+    id: int
+    telegram_id: int
+    first_name: str | None = None
+    last_name: str | None = None
+    username: str | None = None
+    role: str
 
     class Config:
         orm_mode = True

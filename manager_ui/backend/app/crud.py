@@ -64,3 +64,54 @@ async def get_user_shops(db: AsyncSession, user_id: int) -> list[models.Business
     """Возвращает список магазинов пользователя."""
     user = await db.get(models.User, user_id)
     return user.shops if user else []
+
+
+async def update_business_account(
+    db: AsyncSession, shop_id: int, data: schemas.BusinessAccountUpdate
+) -> models.BusinessAccount | None:
+    """Обновляет информацию о магазине."""
+    shop = await db.get(models.BusinessAccount, shop_id)
+    if not shop:
+        return None
+
+    for field, value in data.dict(exclude_unset=True).items():
+        setattr(shop, field, value)
+
+    await db.commit()
+    await db.refresh(shop)
+    return shop
+
+
+async def delete_business_account(db: AsyncSession, shop_id: int) -> None:
+    """Удаляет магазин."""
+    shop = await db.get(models.BusinessAccount, shop_id)
+    if shop:
+        await db.delete(shop)
+        await db.commit()
+
+
+async def remove_manager_from_shop(
+    db: AsyncSession, manager_id: int, shop_id: int
+) -> None:
+    """Отвязывает менеджера от магазина."""
+    shop = await db.get(models.BusinessAccount, shop_id)
+    manager = await db.get(models.User, manager_id)
+    if shop and manager and manager in shop.managers:
+        shop.managers.remove(manager)
+        await db.commit()
+
+
+async def get_shop_users(db: AsyncSession, shop_id: int) -> list[tuple[models.User, str]]:
+    """Возвращает пользователей магазина с указанием их ролей."""
+    shop = await db.get(models.BusinessAccount, shop_id)
+    if not shop:
+        return []
+
+    users: list[tuple[models.User, str]] = []
+    if shop.creator:
+        users.append((shop.creator, "creator"))
+
+    for manager in shop.managers:
+        users.append((manager, "manager"))
+
+    return users
