@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Manager UI</title>
+</head>
+<body>
+    <h1>Manager UI</h1>
+    <script>
+        const ws = new WebSocket("ws://localhost:8000/ws/1");
+        ws.onmessage = (event) => console.log(event.data);
+    </script>
+</body>
+</html>
