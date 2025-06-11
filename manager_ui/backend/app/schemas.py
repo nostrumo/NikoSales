@@ -1,4 +1,6 @@
 from datetime import datetime
+from enum import Enum
+
 from pydantic import BaseModel
 
 
@@ -45,6 +47,49 @@ class MessageRead(MessageBase):
 
     id: int
     created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class IntegrationType(str, Enum):
+    """Типы интеграции магазина."""
+
+    OZON = "ozon"
+    WILDBERRIES = "wildberries"
+    YAMARKET = "yamarket"
+    AVITO = "avito"
+    WEBSITE = "website"
+
+
+class DataType(str, Enum):
+    """Типы данных магазина."""
+
+    TEXT = "text"
+    WEB_PAGE = "web_page"
+    DOCUMENT = "document"
+
+
+class BusinessAccountBase(BaseModel):
+    """Базовая схема магазина."""
+
+    name: str
+    integration_type: IntegrationType
+    data_type: DataType | None = None
+    data_content: str | None = None
+
+
+class BusinessAccountCreate(BusinessAccountBase):
+    """Схема создания магазина."""
+
+    creator_id: int
+
+
+class BusinessAccountRead(BusinessAccountBase):
+    """Схема чтения магазина."""
+
+    id: int
+    creator_id: int
 
     class Config:
         orm_mode = True

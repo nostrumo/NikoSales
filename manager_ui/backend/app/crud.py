@@ -36,3 +36,31 @@ async def get_user_messages(db: AsyncSession, user_id: int) -> list[models.Messa
     stmt = select(models.Message).where(models.Message.user_id == user_id).order_by(models.Message.created_at)
     result = await db.execute(stmt)
     return result.scalars().all()
+
+
+async def create_business_account(
+    db: AsyncSession, account_data: schemas.BusinessAccountCreate
+) -> models.BusinessAccount:
+    """Создаёт новый магазин."""
+    account = models.BusinessAccount(**account_data.dict())
+    db.add(account)
+    await db.commit()
+    await db.refresh(account)
+    return account
+
+
+async def add_manager_to_shop(
+    db: AsyncSession, manager_id: int, shop_id: int
+) -> None:
+    """Привязывает менеджера к магазину."""
+    manager = await db.get(models.User, manager_id)
+    shop = await db.get(models.BusinessAccount, shop_id)
+    if manager and shop and manager not in shop.managers:
+        shop.managers.append(manager)
+        await db.commit()
+
+
+async def get_user_shops(db: AsyncSession, user_id: int) -> list[models.BusinessAccount]:
+    """Возвращает список магазинов пользователя."""
+    user = await db.get(models.User, user_id)
+    return user.shops if user else []
