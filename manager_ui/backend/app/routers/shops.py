@@ -32,6 +32,12 @@ async def get_user_shops(user_id: int, db: AsyncSession = Depends(get_session)):
     return await crud.get_user_shops(db, user_id)
 
 
+@router.get("/{shop_id}", response_model=schemas.BusinessAccountRead)
+async def get_shop(shop_id: int, db: AsyncSession = Depends(get_session)) -> schemas.BusinessAccountRead | None:
+    """Возвращает информацию о магазине."""
+    return await crud.get_shop(db, shop_id)
+
+
 @router.put("/{shop_id}", response_model=schemas.BusinessAccountRead)
 async def update_shop(
     shop_id: int,

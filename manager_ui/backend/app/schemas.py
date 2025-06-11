@@ -83,6 +83,10 @@ class BusinessAccountBase(BaseModel):
     api_key: str | None = None
     data_type: DataType | None = None
     data_content: str | None = None
+    shipping_info: str | None = None
+    location_info: str | None = None
+    ai_topics: str | None = None
+    manager_topics: str | None = None
 
 
 class BusinessAccountCreate(BusinessAccountBase):
@@ -99,6 +103,10 @@ class BusinessAccountUpdate(BaseModel):
     api_key: str | None = None
     data_type: DataType | None = None
     data_content: str | None = None
+    shipping_info: str | None = None
+    location_info: str | None = None
+    ai_topics: str | None = None
+    manager_topics: str | None = None
 
 
 class BusinessAccountRead(BusinessAccountBase):
@@ -106,6 +114,7 @@ class BusinessAccountRead(BusinessAccountBase):
 
     id: int
     creator_id: int
+    agent_prompt: str | None = None
 
     class Config:
         orm_mode = True

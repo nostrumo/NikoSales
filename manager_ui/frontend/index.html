@@ -2,13 +2,15 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Manager UI</title>
+    <link rel="stylesheet" href="src/styles.css" />
 </head>
 <body>
-    <h1>Manager UI</h1>
-    <script>
-        const ws = new WebSocket("ws://localhost:8000/ws/1");
-        ws.onmessage = (event) => console.log(event.data);
-    </script>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-type="module" src="src/index.jsx"></script>
 </body>
 </html>

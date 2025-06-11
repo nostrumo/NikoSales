@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import models, schemas
+from .prompts import generate_agent_prompt
 
 
 async def get_or_create_user(db: AsyncSession, user_data: schemas.UserCreate) -> models.User:
@@ -47,6 +48,7 @@ async def create_business_account(
     взаимодействия с внешним REST API магазина.
     """
     account = models.BusinessAccount(**account_data.dict())
+    account.agent_prompt = generate_agent_prompt(account)
     db.add(account)
     await db.commit()
     await db.refresh(account)
@@ -70,6 +72,11 @@ async def get_user_shops(db: AsyncSession, user_id: int) -> list[models.Business
     return user.shops if user else []
 
 
+async def get_shop(db: AsyncSession, shop_id: int) -> models.BusinessAccount | None:
+    """Возвращает магазин по идентификатору."""
+    return await db.get(models.BusinessAccount, shop_id)
+
+
 async def update_business_account(
     db: AsyncSession, shop_id: int, data: schemas.BusinessAccountUpdate
 ) -> models.BusinessAccount | None:
@@ -80,6 +87,8 @@ async def update_business_account(
 
     for field, value in data.dict(exclude_unset=True).items():
         setattr(shop, field, value)
+
+    shop.agent_prompt = generate_agent_prompt(shop)
 
     await db.commit()
     await db.refresh(shop)

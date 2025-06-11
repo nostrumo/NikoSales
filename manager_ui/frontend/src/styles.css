@@ -1,0 +1,123 @@
+:root {
+    --color-yellow: #f5c20b;
+    --color-brown: #795548;
+    --color-blue: #2196f3;
+    --color-green: #4caf50;
+    --bg-light: #ffffff;
+    --bg-dark: #1e1e1e;
+    --text-light: #000000;
+    --text-dark: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.theme-light {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+}
+
+.theme-dark {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+.navigation {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--color-yellow);
+}
+
+.navigation button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+.navigation button.active {
+    border-bottom: 2px solid var(--color-blue);
+}
+
+.chat-page {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+.user-list {
+    width: 200px;
+    border-right: 1px solid var(--color-brown);
+    overflow-y: auto;
+}
+
+.chat-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.message {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+.message.user {
+    background-color: var(--color-blue);
+    color: var(--text-dark);
+    align-self: flex-start;
+}
+
+.message.manager {
+    background-color: var(--color-green);
+    color: var(--text-dark);
+    align-self: flex-end;
+}
+
+.input-area {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 0.5rem;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .chat-page {
+        flex-direction: column;
+    }
+
+    .user-list {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--color-brown);
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .chat-window {
+        height: calc(100vh - 200px);
+    }
+}

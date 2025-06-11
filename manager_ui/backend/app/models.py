@@ -82,8 +82,11 @@ manager_shops = Table(
 class BusinessAccount(Base):
     """Магазин, к которому привязан менеджер.
 
-    Помимо общей информации, хранит тип интеграции и API-ключ, необходимый
-    для подключения к внешнему REST API магазина.
+    Помимо общей информации, хранит тип интеграции и API-ключ, необходимые
+    для подключения к внешнему REST API магазина. Дополнительно содержит
+    сведения о доставке, местоположении и распределении вопросов между
+    ИИ‑агентом и менеджером. На основе этих данных формируется поле
+    ``agent_prompt``, которое используется для генерации подсказок ИИ.
     """
 
     __tablename__ = "business_accounts"
@@ -95,6 +98,11 @@ class BusinessAccount(Base):
     creator_id: int = Column(Integer, ForeignKey("users.id"), nullable=False)
     data_type: DataType = Column(SAEnum(DataType), nullable=True)
     data_content: str | None = Column(Text, nullable=True)
+    shipping_info: str | None = Column(Text, nullable=True)
+    location_info: str | None = Column(Text, nullable=True)
+    ai_topics: str | None = Column(Text, nullable=True)
+    manager_topics: str | None = Column(Text, nullable=True)
+    agent_prompt: str | None = Column(Text, nullable=True)
 
     creator = relationship("User", backref="created_shops")
     managers = relationship(
